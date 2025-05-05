@@ -44,4 +44,32 @@ function detiles(thing) {
   console.log('i am' + this.name + thing);
 }
 
-Function.prototype.myCall = function (fn, ...args) {};
+Function.prototype.myCall = function (context = {}, ...args) {
+  if(typeof this !== "function") {
+    new Error('not callable')
+  }
+  context.fn = this
+  context.fn(...args)
+};
+
+
+Function.prototype.myApply = function (context = {}, args = []) {
+  if(typeof this !== "function") {
+    new Error('not callable')
+  }
+  if(Array.isArray(args)) {
+    new Error('not an array')
+  }
+  context.fn = this
+  context.fn(...args)
+};
+
+Function.prototype.myBind = function (context = {}, ...args) {
+  if(typeof this !== "function") {
+    new Error('not callable')
+  }
+  context.fn = this
+  return function(...newArgs) {
+    context.fn(...args,...newArgs)
+  }
+};
